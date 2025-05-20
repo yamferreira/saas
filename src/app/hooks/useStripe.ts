@@ -39,7 +39,7 @@ export function useStripe() {
             console.log(error);
         }
     }
-
+    //criação de pagamento recorrente
     async function createSubscriptionStripeCheckout(checkoutData: any) {
         if (!stripe) return;
 
@@ -59,11 +59,24 @@ export function useStripe() {
             console.log(error);
         }
     }
+    //criação do portal de pagamento
+    async function hendleCreateStripePortal() {
+        const response = await fetch("/api/stripe/create-portal", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data = await response.json();
+
+        window.location.href = data.url;
+    }
 
     return {
         createPaymentStripeCheckout,
         createSubscriptionStripeCheckout,
-
+        hendleCreateStripePortal,
     };
 }
 

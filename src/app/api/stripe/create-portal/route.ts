@@ -1,5 +1,7 @@
-import {NextRequest} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {auth} from "@/app/lib/auth";
+import {db} from "@/app/lib/firebase";
+import stripe from "@/app/lib/stripe";
 
 export async function POST(req: NextRequest) {
 
@@ -18,7 +20,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({error: "User not found."}, {status: 404});
         }
 
-        const customerId = userDoc.data().stripeCustomerId;
+        const customerId = userDoc.data()?.stripeCustomerId;
 
         if (!customerId) {
             return NextResponse.json({error: "Customer not found."}, {status: 404});

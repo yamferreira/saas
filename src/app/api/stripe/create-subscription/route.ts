@@ -1,5 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import {auth} from "@/app/lib/auth";
+import stripe from "@/app/lib/stripe";
+import {getOrCreateCustomer} from "@/app/server/stripe/get-customer-id";
 
 export async function POST(req: NextRequest) {
     const {testeId} = await req.json();
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest) {
     const userId = session?.user?.id;
     const userEmail = session?.user?.email;
 
-    if(!userId || userEmail) {
+    if(!userId || !userEmail) {
         return NextResponse.json({error: "Unauthorized."}, {status: 401});
     }
 
